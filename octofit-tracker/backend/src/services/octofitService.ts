@@ -82,19 +82,19 @@ export async function suggestWorkouts(userEmail: string) {
   ]);
   const workoutFocuses = new Set(workouts.map((workout) => workout.focus.toLowerCase()));
   const goalFocus = user.fitnessGoal?.toLowerCase();
-  const activityFocus = activities
+  const activityFocuses = activities
     .map((activity) => activity.type.toLowerCase())
-    .map((type) => (type === 'run' || type === 'cycle' || type === 'walk' ? 'endurance' : type))
-    .find((focus) => workoutFocuses.has(focus));
+    .map((type) => (type === 'run' || type === 'cycle' || type === 'walk' ? 'endurance' : type));
+  const activityFocus = activityFocuses.find((focus) => workoutFocuses.has(focus));
   const preferredFocus = goalFocus && workoutFocuses.has(goalFocus) ? goalFocus : activityFocus;
   return workouts
     .map((workout) => {
       const matchesGoal = workout.focus.toLowerCase() === preferredFocus && preferredFocus === goalFocus;
-      const matchesActivity = workout.focus.toLowerCase() === preferredFocus && !matchesGoal;
-      const reason = matchesGoal
-        ? 'This workout supports your personal fitness goal.'
-        : matchesActivity
-          ? 'This workout matches your recent activity pattern.'
+      const matchesActivity = activityFocuses.includes(workout.focus.toLowerCase());
+      const reason = matchesActivity
+        ? 'This workout matches your recent activity pattern.'
+        : matchesGoal
+          ? 'This workout supports your personal fitness goal.'
           : 'This workout can complement your training routine.';
       return { ...workout, reason, match: workout.focus.toLowerCase() === preferredFocus };
     })
