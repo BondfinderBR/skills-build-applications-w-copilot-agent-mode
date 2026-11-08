@@ -92,10 +92,10 @@ export async function suggestWorkouts(userEmail: string) {
       const matchesGoal = workout.focus.toLowerCase() === preferredFocus && preferredFocus === goalFocus;
       const matchesActivity = workout.focus.toLowerCase() === preferredFocus && !matchesGoal;
       const reason = matchesGoal
-        ? `This workout supports your ${workout.focus} fitness goal.`
+        ? 'This workout supports your personal fitness goal.'
         : matchesActivity
-          ? `This workout matches your recent ${activities[0]?.type ?? workout.focus} activity.`
-          : `This workout can complement your ${user.fitnessGoal} fitness goal.`;
+          ? 'This workout matches your recent activity pattern.'
+          : 'This workout can complement your training routine.';
       return { ...workout, reason, match: workout.focus.toLowerCase() === preferredFocus };
     })
     .sort((left, right) => Number(right.match) - Number(left.match) || left.title.localeCompare(right.title))
