@@ -1,10 +1,11 @@
 import { useApiData } from '../api/useApiData.js';
+import { getJson } from '../api/client.js';
 
 type Activity = { type: string; minutes: number; points: number };
 type ActivitiesResponse = { activities: Activity[] };
 
 export default function Activities() {
-  const { data, error, loading } = useApiData<ActivitiesResponse>('/api/activities');
+  const { data, error, loading } = useApiData<ActivitiesResponse>('/api/activities', getJson<ActivitiesResponse>);
   return <section className="card"><div className="card-body">
     <h2 className="h4">Activities</h2>
     <p>Track student activity minutes and points.</p>

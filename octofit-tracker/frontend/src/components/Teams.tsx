@@ -1,10 +1,11 @@
 import { useApiData } from '../api/useApiData.js';
+import { getJson } from '../api/client.js';
 
 type Team = { name: string; mascot?: string; members: string[] };
 type TeamsResponse = { teams: Team[] };
 
 export default function Teams() {
-  const { data, error, loading } = useApiData<TeamsResponse>('/api/teams');
+  const { data, error, loading } = useApiData<TeamsResponse>('/api/teams', getJson<TeamsResponse>);
   return <section className="card"><div className="card-body">
     <h2 className="h4">Teams</h2>
     <p>Manage teams and members.</p>

@@ -1,11 +1,15 @@
 import { useApiData } from '../api/useApiData.js';
+import { getJson } from '../api/client.js';
 
 type Workout = { title: string; focus?: string; minutes?: number; difficulty?: string; reason?: string };
 type WorkoutsResponse = { suggestions: Workout[] };
 
 export default function Workouts() {
   const email = 'mona@example.com';
-  const { data, error, loading } = useApiData<WorkoutsResponse>(`/api/workouts/suggestions/${encodeURIComponent(email)}`);
+  const { data, error, loading } = useApiData<WorkoutsResponse>(
+    `/api/workouts/suggestions/${encodeURIComponent(email)}`,
+    getJson<WorkoutsResponse>,
+  );
   return <section className="card"><div className="card-body">
     <h2 className="h4">Workout suggestions</h2>
     <p>Recommend workouts from activity patterns.</p>
